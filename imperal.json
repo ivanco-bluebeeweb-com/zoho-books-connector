@@ -1,0 +1,2238 @@
+{
+  "manifest_schema_version": 3,
+  "sdk_version": "5.13.1",
+  "app_id": "zoho-books-connector",
+  "version": "0.1.0",
+  "name": "Zoho Books",
+  "description": "Official Imperal connector for Zoho Books (C27. Accounting & Bookkeeping). Full CRUD on core entities, webhooks, and compliance audits.",
+  "icon": "icon.svg",
+  "actions_explicit": true,
+  "system": false,
+  "capabilities": [
+    "zoho_books:manage"
+  ],
+  "tools": [
+    {
+      "name": "connect_zoho_books",
+      "description": "Connect your own Zoho Books account.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "create:connection"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "label": {
+            "default": "",
+            "description": "Friendly connection label, e.g. Acme Zoho Books.",
+            "title": "Label",
+            "type": "string"
+          },
+          "api_key": {
+            "description": "Accounting API Key / OAuth Access Token.",
+            "title": "Api Key",
+            "type": "string"
+          },
+          "base_url": {
+            "default": "",
+            "description": "Optional custom base URL or instance domain.",
+            "title": "Base Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "api_key"
+        ],
+        "title": "ConnectParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "label": {
+            "default": "",
+            "description": "Friendly connection label, e.g. Acme Zoho Books.",
+            "title": "Label",
+            "type": "string"
+          },
+          "api_key": {
+            "description": "Accounting API Key / OAuth Access Token.",
+            "title": "Api Key",
+            "type": "string"
+          },
+          "base_url": {
+            "default": "",
+            "description": "Optional custom base URL or instance domain.",
+            "title": "Base Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "api_key"
+        ],
+        "title": "ConnectParams",
+        "type": "object"
+      },
+      "event": "zoho-books-connector.connect_zoho_books",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_connections",
+      "description": "List connected accounts.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "description": "Empty parameter model.",
+        "properties": {},
+        "title": "NoParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "$defs": {
+          "ConnectionRecord": {
+            "properties": {
+              "id": {
+                "title": "Id",
+                "type": "string"
+              },
+              "label": {
+                "title": "Label",
+                "type": "string"
+              },
+              "masked_key": {
+                "title": "Masked Key",
+                "type": "string"
+              },
+              "base_url": {
+                "title": "Base Url",
+                "type": "string"
+              },
+              "is_active": {
+                "title": "Is Active",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "masked_key",
+              "base_url",
+              "is_active"
+            ],
+            "title": "ConnectionRecord",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "connections": {
+            "items": {
+              "$ref": "#/$defs/ConnectionRecord"
+            },
+            "title": "Connections",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "connections",
+          "total"
+        ],
+        "title": "ConnectionList",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "disconnect_zoho_books",
+      "description": "Disconnect an account.",
+      "action_type": "write",
+      "chain_callable": true,
+      "effects": [
+        "delete:connection"
+      ],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "event": "zoho-books-connector.disconnect_zoho_books",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_customers",
+      "description": "Execute list_customers.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListCustomerParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListCustomerParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_customer",
+      "description": "Execute get_customer.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id"
+        ],
+        "title": "GetCustomerParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id"
+        ],
+        "title": "GetCustomerParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_customer",
+      "description": "Execute create_customer.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateCustomerParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateCustomerParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_customer",
+      "description": "Execute update_customer.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "customer_id",
+          "fields"
+        ],
+        "title": "UpdateCustomerParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "customer_id",
+          "fields"
+        ],
+        "title": "UpdateCustomerParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_customer",
+      "description": "Execute delete_customer.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id"
+        ],
+        "title": "DeleteCustomerParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "customer_id": {
+            "description": "Unique identifier of the customer.",
+            "title": "Customer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer_id"
+        ],
+        "title": "DeleteCustomerParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_invoices",
+      "description": "Execute list_invoices.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListInvoiceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListInvoiceParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_invoice",
+      "description": "Execute get_invoice.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "invoice_id"
+        ],
+        "title": "GetInvoiceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "invoice_id"
+        ],
+        "title": "GetInvoiceParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_invoice",
+      "description": "Execute create_invoice.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateInvoiceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateInvoiceParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_invoice",
+      "description": "Execute update_invoice.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "invoice_id",
+          "fields"
+        ],
+        "title": "UpdateInvoiceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "invoice_id",
+          "fields"
+        ],
+        "title": "UpdateInvoiceParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_invoice",
+      "description": "Execute delete_invoice.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "invoice_id"
+        ],
+        "title": "DeleteInvoiceParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "invoice_id": {
+            "description": "Unique identifier of the invoice.",
+            "title": "Invoice Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "invoice_id"
+        ],
+        "title": "DeleteInvoiceParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_bills",
+      "description": "List accounts payable bills from the connected Zoho Books organization.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListBillParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListBillParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_bill",
+      "description": "Read one accounts payable bill in full from the connected Zoho Books organization.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bill_id"
+        ],
+        "title": "GetBillParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bill_id"
+        ],
+        "title": "GetBillParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_bill",
+      "description": "Execute create_bill.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateBillParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateBillParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_bill",
+      "description": "Execute update_bill.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "bill_id",
+          "fields"
+        ],
+        "title": "UpdateBillParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "bill_id",
+          "fields"
+        ],
+        "title": "UpdateBillParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_bill",
+      "description": "Execute delete_bill.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bill_id"
+        ],
+        "title": "DeleteBillParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bill_id": {
+            "description": "Unique identifier of the bill.",
+            "title": "Bill Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bill_id"
+        ],
+        "title": "DeleteBillParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_payments",
+      "description": "Execute list_payments.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListPaymentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListPaymentParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_payment",
+      "description": "Execute get_payment.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "title": "GetPaymentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "title": "GetPaymentParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_payment",
+      "description": "Execute create_payment.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreatePaymentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreatePaymentParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_payment",
+      "description": "Execute update_payment.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "payment_id",
+          "fields"
+        ],
+        "title": "UpdatePaymentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "payment_id",
+          "fields"
+        ],
+        "title": "UpdatePaymentParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_payment",
+      "description": "Execute delete_payment.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "title": "DeletePaymentParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "payment_id": {
+            "description": "Unique identifier of the payment.",
+            "title": "Payment Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "payment_id"
+        ],
+        "title": "DeletePaymentParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_bank_accounts",
+      "description": "Execute list_bank_accounts.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListBankAccountParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListBankAccountParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_bank_account",
+      "description": "Execute get_bank_account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bank_account_id"
+        ],
+        "title": "GetBankAccountParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bank_account_id"
+        ],
+        "title": "GetBankAccountParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_bank_account",
+      "description": "Execute create_bank_account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateBankAccountParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateBankAccountParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_bank_account",
+      "description": "Execute update_bank_account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "bank_account_id",
+          "fields"
+        ],
+        "title": "UpdateBankAccountParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "bank_account_id",
+          "fields"
+        ],
+        "title": "UpdateBankAccountParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_bank_account",
+      "description": "Execute delete_bank_account.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bank_account_id"
+        ],
+        "title": "DeleteBankAccountParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "bank_account_id": {
+            "description": "Unique identifier of the bank_account.",
+            "title": "Bank Account Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bank_account_id"
+        ],
+        "title": "DeleteBankAccountParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "list_tax_rates",
+      "description": "Execute list_tax_rates.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListTaxRateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "limit": {
+            "default": 50,
+            "description": "Max records to return (1-100).",
+            "title": "Limit",
+            "type": "integer"
+          },
+          "cursor": {
+            "default": "",
+            "description": "Pagination cursor or page token.",
+            "title": "Cursor",
+            "type": "string"
+          }
+        },
+        "title": "ListTaxRateParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_tax_rate",
+      "description": "Execute get_tax_rate.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tax_rate_id"
+        ],
+        "title": "GetTaxRateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tax_rate_id"
+        ],
+        "title": "GetTaxRateParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "create_tax_rate",
+      "description": "Execute create_tax_rate.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateTaxRateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name or title of the record.",
+            "title": "Name",
+            "type": "string"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Detailed attributes and payload.",
+            "title": "Details"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "CreateTaxRateParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "update_tax_rate",
+      "description": "Execute update_tax_rate.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "tax_rate_id",
+          "fields"
+        ],
+        "title": "UpdateTaxRateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          },
+          "fields": {
+            "additionalProperties": true,
+            "description": "Attributes to update.",
+            "title": "Fields",
+            "type": "object"
+          }
+        },
+        "required": [
+          "tax_rate_id",
+          "fields"
+        ],
+        "title": "UpdateTaxRateParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "delete_tax_rate",
+      "description": "Execute delete_tax_rate.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tax_rate_id"
+        ],
+        "title": "DeleteTaxRateParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier.",
+            "title": "Connection Id",
+            "type": "string"
+          },
+          "tax_rate_id": {
+            "description": "Unique identifier of the tax_rate.",
+            "title": "Tax Rate Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tax_rate_id"
+        ],
+        "title": "DeleteTaxRateParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "audit_accounting_health",
+      "description": "Execute audit_accounting_health.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    },
+    {
+      "name": "get_cash_flow_summary",
+      "description": "Execute get_cash_flow_summary.",
+      "action_type": "read",
+      "chain_callable": true,
+      "effects": [],
+      "id_projection": "",
+      "params_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "return_schema": {
+        "properties": {
+          "connection_id": {
+            "default": "",
+            "description": "Connection identifier (empty uses active connection).",
+            "title": "Connection Id",
+            "type": "string"
+          }
+        },
+        "title": "ConnectionIdParams",
+        "type": "object"
+      },
+      "event": "",
+      "background": false,
+      "long_running": false,
+      "scopes": [],
+      "owner_chat_tool": "tool_zoho-books-connector_chat"
+    }
+  ],
+  "signals": [],
+  "schedules": [],
+  "required_scopes": [],
+  "icon_size_bytes": 545,
+  "lifecycle": {
+    "health_check": {
+      "interval_sec": 60
+    }
+  },
+  "panels": [
+    {
+      "panel_id": "zoho_books_sidebar",
+      "slot": "left",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    },
+    {
+      "panel_id": "__zoho_books_settings",
+      "slot": "center",
+      "title": "",
+      "tree": {},
+      "icon": "",
+      "refresh": "manual",
+      "center_overlay": false
+    }
+  ],
+  "pricing": {
+    "model": "per_action",
+    "currency": "tokens",
+    "monthly_price": 0,
+    "revenue_split_dev": 70,
+    "free_tools": [
+      "connect_zoho_books",
+      "list_connections",
+      "disconnect_zoho_books"
+    ],
+    "tool_prices": {
+      "connect_zoho_books": 0,
+      "list_connections": 0,
+      "disconnect_zoho_books": 0,
+      "list_customers": 8,
+      "get_customer": 8,
+      "create_customer": 16,
+      "update_customer": 16,
+      "delete_customer": 16,
+      "list_invoices": 8,
+      "get_invoice": 8,
+      "create_invoice": 16,
+      "update_invoice": 16,
+      "delete_invoice": 16,
+      "list_bills": 8,
+      "get_bill": 8,
+      "create_bill": 16,
+      "update_bill": 16,
+      "delete_bill": 16,
+      "list_payments": 8,
+      "get_payment": 8,
+      "create_payment": 16,
+      "update_payment": 16,
+      "delete_payment": 16,
+      "list_bank_accounts": 8,
+      "get_bank_account": 8,
+      "create_bank_account": 16,
+      "update_bank_account": 16,
+      "delete_bank_account": 16,
+      "list_tax_rates": 8,
+      "get_tax_rate": 8,
+      "create_tax_rate": 16,
+      "update_tax_rate": 16,
+      "delete_tax_rate": 16,
+      "audit_accounting_health": 40,
+      "get_cash_flow_summary": 40
+    }
+  }
+}
