@@ -291,3 +291,21 @@ class CashFlowSummary(BaseModel):
     total_liquid_balance: float
     currency: str
     generated_at: str
+
+class AuditAccountingHealthResult(BaseModel):
+    status: str = "ok"
+    total_customers: int = 0
+    total_invoices: int = 0
+    total_bills: int = 0
+    bank_accounts_count: int = 0
+    overdue_invoices_count: int = 0
+    overdue_bills_count: int = 0
+    summary: str = ""
+
+class GetCashFlowSummaryResult(BaseModel):
+    total_receivables: float = 0.0
+    total_payables: float = 0.0
+    net_cash_flow: float = 0.0
+    currency: str = "USD"
+    bank_accounts: list[dict[str, Any]] = []
+    summary: str = ""

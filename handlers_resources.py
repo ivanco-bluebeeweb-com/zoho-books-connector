@@ -24,7 +24,7 @@ async def _get_client(ctx, cid: str = ""):
     chain_callable=True,
     data_model=ListCustomerParams
 )
-async def list_customers(params: ListCustomerParams, ctx) -> ActionResult[CustomerList]:
+async def list_customers(ctx, params: ListCustomerParams) -> ActionResult[CustomerList]:
     """Execute list customers operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -39,7 +39,7 @@ async def list_customers(params: ListCustomerParams, ctx) -> ActionResult[Custom
     chain_callable=True,
     data_model=GetCustomerParams
 )
-async def get_customer(params: GetCustomerParams, ctx) -> ActionResult[CustomerRecord]:
+async def get_customer(ctx, params: GetCustomerParams) -> ActionResult[CustomerRecord]:
     """Execute get customer operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -53,7 +53,7 @@ async def get_customer(params: GetCustomerParams, ctx) -> ActionResult[CustomerR
     chain_callable=True,
     data_model=CreateCustomerParams
 )
-async def create_customer(params: CreateCustomerParams, ctx) -> ActionResult[CustomerRecord]:
+async def create_customer(ctx, params: CreateCustomerParams) -> ActionResult[CustomerRecord]:
     """Execute create customer operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -67,7 +67,7 @@ async def create_customer(params: CreateCustomerParams, ctx) -> ActionResult[Cus
     chain_callable=True,
     data_model=UpdateCustomerParams
 )
-async def update_customer(params: UpdateCustomerParams, ctx) -> ActionResult[CustomerRecord]:
+async def update_customer(ctx, params: UpdateCustomerParams) -> ActionResult[CustomerRecord]:
     """Execute update customer operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -81,7 +81,7 @@ async def update_customer(params: UpdateCustomerParams, ctx) -> ActionResult[Cus
     chain_callable=True,
     data_model=DeleteCustomerParams
 )
-async def delete_customer(params: DeleteCustomerParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_customer(ctx, params: DeleteCustomerParams) -> ActionResult[DeleteResult]:
     """Execute delete customer operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -95,7 +95,7 @@ async def delete_customer(params: DeleteCustomerParams, ctx) -> ActionResult[Del
     chain_callable=True,
     data_model=ListInvoiceParams
 )
-async def list_invoices(params: ListInvoiceParams, ctx) -> ActionResult[InvoiceList]:
+async def list_invoices(ctx, params: ListInvoiceParams) -> ActionResult[InvoiceList]:
     """Execute list invoices operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -110,7 +110,7 @@ async def list_invoices(params: ListInvoiceParams, ctx) -> ActionResult[InvoiceL
     chain_callable=True,
     data_model=GetInvoiceParams
 )
-async def get_invoice(params: GetInvoiceParams, ctx) -> ActionResult[InvoiceRecord]:
+async def get_invoice(ctx, params: GetInvoiceParams) -> ActionResult[InvoiceRecord]:
     """Execute get invoice operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -124,7 +124,7 @@ async def get_invoice(params: GetInvoiceParams, ctx) -> ActionResult[InvoiceReco
     chain_callable=True,
     data_model=CreateInvoiceParams
 )
-async def create_invoice(params: CreateInvoiceParams, ctx) -> ActionResult[InvoiceRecord]:
+async def create_invoice(ctx, params: CreateInvoiceParams) -> ActionResult[InvoiceRecord]:
     """Execute create invoice operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -138,7 +138,7 @@ async def create_invoice(params: CreateInvoiceParams, ctx) -> ActionResult[Invoi
     chain_callable=True,
     data_model=UpdateInvoiceParams
 )
-async def update_invoice(params: UpdateInvoiceParams, ctx) -> ActionResult[InvoiceRecord]:
+async def update_invoice(ctx, params: UpdateInvoiceParams) -> ActionResult[InvoiceRecord]:
     """Execute update invoice operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -152,7 +152,7 @@ async def update_invoice(params: UpdateInvoiceParams, ctx) -> ActionResult[Invoi
     chain_callable=True,
     data_model=DeleteInvoiceParams
 )
-async def delete_invoice(params: DeleteInvoiceParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_invoice(ctx, params: DeleteInvoiceParams) -> ActionResult[DeleteResult]:
     """Execute delete invoice operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -166,7 +166,7 @@ async def delete_invoice(params: DeleteInvoiceParams, ctx) -> ActionResult[Delet
     chain_callable=True,
     data_model=ListBillParams
 )
-async def list_bills(params: ListBillParams, ctx) -> ActionResult[BillList]:
+async def list_bills(ctx, params: ListBillParams) -> ActionResult[BillList]:
     """Execute list bills operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -181,7 +181,7 @@ async def list_bills(params: ListBillParams, ctx) -> ActionResult[BillList]:
     chain_callable=True,
     data_model=GetBillParams
 )
-async def get_bill(params: GetBillParams, ctx) -> ActionResult[BillRecord]:
+async def get_bill(ctx, params: GetBillParams) -> ActionResult[BillRecord]:
     """Execute get bill operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -195,7 +195,7 @@ async def get_bill(params: GetBillParams, ctx) -> ActionResult[BillRecord]:
     chain_callable=True,
     data_model=CreateBillParams
 )
-async def create_bill(params: CreateBillParams, ctx) -> ActionResult[BillRecord]:
+async def create_bill(ctx, params: CreateBillParams) -> ActionResult[BillRecord]:
     """Execute create bill operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -209,7 +209,7 @@ async def create_bill(params: CreateBillParams, ctx) -> ActionResult[BillRecord]
     chain_callable=True,
     data_model=UpdateBillParams
 )
-async def update_bill(params: UpdateBillParams, ctx) -> ActionResult[BillRecord]:
+async def update_bill(ctx, params: UpdateBillParams) -> ActionResult[BillRecord]:
     """Execute update bill operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -223,7 +223,7 @@ async def update_bill(params: UpdateBillParams, ctx) -> ActionResult[BillRecord]
     chain_callable=True,
     data_model=DeleteBillParams
 )
-async def delete_bill(params: DeleteBillParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_bill(ctx, params: DeleteBillParams) -> ActionResult[DeleteResult]:
     """Execute delete bill operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -237,7 +237,7 @@ async def delete_bill(params: DeleteBillParams, ctx) -> ActionResult[DeleteResul
     chain_callable=True,
     data_model=ListPaymentParams
 )
-async def list_payments(params: ListPaymentParams, ctx) -> ActionResult[PaymentList]:
+async def list_payments(ctx, params: ListPaymentParams) -> ActionResult[PaymentList]:
     """Execute list payments operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -252,7 +252,7 @@ async def list_payments(params: ListPaymentParams, ctx) -> ActionResult[PaymentL
     chain_callable=True,
     data_model=GetPaymentParams
 )
-async def get_payment(params: GetPaymentParams, ctx) -> ActionResult[PaymentRecord]:
+async def get_payment(ctx, params: GetPaymentParams) -> ActionResult[PaymentRecord]:
     """Execute get payment operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -266,7 +266,7 @@ async def get_payment(params: GetPaymentParams, ctx) -> ActionResult[PaymentReco
     chain_callable=True,
     data_model=CreatePaymentParams
 )
-async def create_payment(params: CreatePaymentParams, ctx) -> ActionResult[PaymentRecord]:
+async def create_payment(ctx, params: CreatePaymentParams) -> ActionResult[PaymentRecord]:
     """Execute create payment operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -280,7 +280,7 @@ async def create_payment(params: CreatePaymentParams, ctx) -> ActionResult[Payme
     chain_callable=True,
     data_model=UpdatePaymentParams
 )
-async def update_payment(params: UpdatePaymentParams, ctx) -> ActionResult[PaymentRecord]:
+async def update_payment(ctx, params: UpdatePaymentParams) -> ActionResult[PaymentRecord]:
     """Execute update payment operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -294,7 +294,7 @@ async def update_payment(params: UpdatePaymentParams, ctx) -> ActionResult[Payme
     chain_callable=True,
     data_model=DeletePaymentParams
 )
-async def delete_payment(params: DeletePaymentParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_payment(ctx, params: DeletePaymentParams) -> ActionResult[DeleteResult]:
     """Execute delete payment operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -308,7 +308,7 @@ async def delete_payment(params: DeletePaymentParams, ctx) -> ActionResult[Delet
     chain_callable=True,
     data_model=ListBankAccountParams
 )
-async def list_bank_accounts(params: ListBankAccountParams, ctx) -> ActionResult[BankAccountList]:
+async def list_bank_accounts(ctx, params: ListBankAccountParams) -> ActionResult[BankAccountList]:
     """Execute list bank accounts operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -323,7 +323,7 @@ async def list_bank_accounts(params: ListBankAccountParams, ctx) -> ActionResult
     chain_callable=True,
     data_model=GetBankAccountParams
 )
-async def get_bank_account(params: GetBankAccountParams, ctx) -> ActionResult[BankAccountRecord]:
+async def get_bank_account(ctx, params: GetBankAccountParams) -> ActionResult[BankAccountRecord]:
     """Execute get bank account operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -337,7 +337,7 @@ async def get_bank_account(params: GetBankAccountParams, ctx) -> ActionResult[Ba
     chain_callable=True,
     data_model=CreateBankAccountParams
 )
-async def create_bank_account(params: CreateBankAccountParams, ctx) -> ActionResult[BankAccountRecord]:
+async def create_bank_account(ctx, params: CreateBankAccountParams) -> ActionResult[BankAccountRecord]:
     """Execute create bank account operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -351,7 +351,7 @@ async def create_bank_account(params: CreateBankAccountParams, ctx) -> ActionRes
     chain_callable=True,
     data_model=UpdateBankAccountParams
 )
-async def update_bank_account(params: UpdateBankAccountParams, ctx) -> ActionResult[BankAccountRecord]:
+async def update_bank_account(ctx, params: UpdateBankAccountParams) -> ActionResult[BankAccountRecord]:
     """Execute update bank account operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -365,7 +365,7 @@ async def update_bank_account(params: UpdateBankAccountParams, ctx) -> ActionRes
     chain_callable=True,
     data_model=DeleteBankAccountParams
 )
-async def delete_bank_account(params: DeleteBankAccountParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_bank_account(ctx, params: DeleteBankAccountParams) -> ActionResult[DeleteResult]:
     """Execute delete bank account operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -379,7 +379,7 @@ async def delete_bank_account(params: DeleteBankAccountParams, ctx) -> ActionRes
     chain_callable=True,
     data_model=ListTaxRateParams
 )
-async def list_tax_rates(params: ListTaxRateParams, ctx) -> ActionResult[TaxRateList]:
+async def list_tax_rates(ctx, params: ListTaxRateParams) -> ActionResult[TaxRateList]:
     """Execute list tax rates operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -394,7 +394,7 @@ async def list_tax_rates(params: ListTaxRateParams, ctx) -> ActionResult[TaxRate
     chain_callable=True,
     data_model=GetTaxRateParams
 )
-async def get_tax_rate(params: GetTaxRateParams, ctx) -> ActionResult[TaxRateRecord]:
+async def get_tax_rate(ctx, params: GetTaxRateParams) -> ActionResult[TaxRateRecord]:
     """Execute get tax rate operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -408,7 +408,7 @@ async def get_tax_rate(params: GetTaxRateParams, ctx) -> ActionResult[TaxRateRec
     chain_callable=True,
     data_model=CreateTaxRateParams
 )
-async def create_tax_rate(params: CreateTaxRateParams, ctx) -> ActionResult[TaxRateRecord]:
+async def create_tax_rate(ctx, params: CreateTaxRateParams) -> ActionResult[TaxRateRecord]:
     """Execute create tax rate operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -422,7 +422,7 @@ async def create_tax_rate(params: CreateTaxRateParams, ctx) -> ActionResult[TaxR
     chain_callable=True,
     data_model=UpdateTaxRateParams
 )
-async def update_tax_rate(params: UpdateTaxRateParams, ctx) -> ActionResult[TaxRateRecord]:
+async def update_tax_rate(ctx, params: UpdateTaxRateParams) -> ActionResult[TaxRateRecord]:
     """Execute update tax rate operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -436,7 +436,7 @@ async def update_tax_rate(params: UpdateTaxRateParams, ctx) -> ActionResult[TaxR
     chain_callable=True,
     data_model=DeleteTaxRateParams
 )
-async def delete_tax_rate(params: DeleteTaxRateParams, ctx) -> ActionResult[DeleteResult]:
+async def delete_tax_rate(ctx, params: DeleteTaxRateParams) -> ActionResult[DeleteResult]:
     """Execute delete tax rate operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -450,7 +450,7 @@ async def delete_tax_rate(params: DeleteTaxRateParams, ctx) -> ActionResult[Dele
     chain_callable=True,
     data_model=ConnectionIdParams
 )
-async def audit_accounting_health(params: ConnectionIdParams, ctx) -> ActionResult[AuditAccountingHealthResult]:
+async def audit_accounting_health(ctx, params: ConnectionIdParams) -> ActionResult[AuditAccountingHealthResult]:
     """Execute audit accounting health operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err
@@ -468,7 +468,7 @@ async def audit_accounting_health(params: ConnectionIdParams, ctx) -> ActionResu
     chain_callable=True,
     data_model=ConnectionIdParams
 )
-async def get_cash_flow_summary(params: ConnectionIdParams, ctx) -> ActionResult[GetCashFlowSummaryResult]:
+async def get_cash_flow_summary(ctx, params: ConnectionIdParams) -> ActionResult[GetCashFlowSummaryResult]:
     """Execute get cash flow summary operation."""
     client, err = await _get_client(ctx, params.connection_id)
     if err: return err

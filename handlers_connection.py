@@ -46,7 +46,7 @@ async def resolve_connection(ctx, connection_id: str = "") -> dict | None:
     effects=["create:connection"],
     data_model=ConnectParams
 )
-async def connect_zoho_books(params: ConnectParams, ctx) -> ActionResult[ConnectionRecord]:
+async def connect_zoho_books(ctx, params: ConnectParams) -> ActionResult[ConnectionRecord]:
     """Connect a new account."""
     client = ZohoBooksClient(
         auth_token=params.auth_token,
@@ -94,7 +94,7 @@ async def connect_zoho_books(params: ConnectParams, ctx) -> ActionResult[Connect
     chain_callable=True,
     data_model=NoParams
 )
-async def list_connections(params: NoParams, ctx) -> ActionResult[ConnectionList]:
+async def list_connections(ctx, params: NoParams) -> ActionResult[ConnectionList]:
     """List connected accounts."""
     conns = await _load_connections(ctx)
     records = [
@@ -120,7 +120,7 @@ async def list_connections(params: NoParams, ctx) -> ActionResult[ConnectionList
     effects=["delete:connection"],
     data_model=ConnectionIdParams
 )
-async def disconnect_zoho_books(params: ConnectionIdParams, ctx) -> ActionResult[DeleteResult]:
+async def disconnect_zoho_books(ctx, params: ConnectionIdParams) -> ActionResult[DeleteResult]:
     """Disconnect an account."""
     conns = await _load_connections(ctx)
     target = await resolve_connection(ctx, params.connection_id)
