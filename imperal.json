@@ -14,7 +14,7 @@
   "tools": [
     {
       "name": "connect_zoho_books",
-      "description": "Connect your own Zoho Books account.",
+      "description": "Connect your own Zoho Books account with OAuth token, Organization ID, and regional datacenter.",
       "action_type": "write",
       "chain_callable": true,
       "effects": [
@@ -29,20 +29,32 @@
             "title": "Label",
             "type": "string"
           },
-          "api_key": {
-            "description": "Accounting API Key / OAuth Access Token.",
-            "title": "Api Key",
+          "auth_token": {
+            "description": "Zoho Books OAuth Access Token or Self-Client token.",
+            "title": "Auth Token",
+            "type": "string"
+          },
+          "organization_id": {
+            "description": "Zoho Books Organization ID (found in Zoho Books under Settings > Organization Profile).",
+            "title": "Organization Id",
+            "type": "string"
+          },
+          "region": {
+            "default": "us",
+            "description": "Zoho regional datacenter: 'us' (com), 'eu' (eu), 'in' (in), 'au' (com.au), 'jp' (jp), 'ca' (ca), 'sa' (sa).",
+            "title": "Region",
             "type": "string"
           },
           "base_url": {
             "default": "",
-            "description": "Optional custom base URL or instance domain.",
+            "description": "Optional custom base URL or instance domain (overrides regional default).",
             "title": "Base Url",
             "type": "string"
           }
         },
         "required": [
-          "api_key"
+          "auth_token",
+          "organization_id"
         ],
         "title": "ConnectParams",
         "type": "object"

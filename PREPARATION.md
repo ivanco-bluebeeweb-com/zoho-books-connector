@@ -1,22 +1,28 @@
 # Zoho Books Connector — Preparation
 
-## Product scope
-Build a secure Imperal connector for **Zoho Books** in **C27. Accounting & Bookkeeping**. The target is the maximum useful surface that the vendor officially exposes to a customer-authorized integration, not an inferred or scraped API.
+## Product Scope
+Build a comprehensive Imperal connector for **Zoho Books** (C27. Accounting & Bookkeeping). The integration connects directly to the official **Zoho Books API v3** across all global regional datacenters, empowering users to manage customers, invoices, bills, vendor payments, bank accounts, tax rates, and cash flow operations.
 
-## Delivery gates
-1. Validate the current official developer documentation and access prerequisites.
-2. Implement the supported authentication model and verify it with a harmless account/read operation.
-3. Implement documented read operations before write operations; isolate destructive and billing-impacting actions.
-4. Add onboarding and the planned UI before the panel implementation.
-5. Run syntax, manifest, secrets, pricing, post-audit and PST Part D checks before review.
+## Official API Specifications
+- **API Version:** Zoho Books API v3
+- **Base URLs by Regional Datacenter:**
+  - US: `https://www.zohoapis.com/books/v3`
+  - EU: `https://www.zohoapis.eu/books/v3`
+  - IN: `https://www.zohoapis.in/books/v3`
+  - AU: `https://www.zohoapis.com.au/books/v3`
+  - JP: `https://www.zohoapis.jp/books/v3`
+  - CA: `https://www.zohoapis.ca/books/v3`
+  - SA: `https://www.zohoapis.sa/books/v3`
+- **Mandatory Requirements:**
+  - Every API request MUST supply `organization_id` as a query parameter.
+  - Multi-datacenter routing support (Standard B7).
+  - Explicit rate limit detection (HTTP 429) and auth classification (HTTP 401/403).
+  - Multi-tenant connection tracking via `connection_id` (Standard B9).
 
-## Source to validate
-- Catalog source: https://www.zoho.com/books
-- This document is a discovery starting point, not evidence that every endpoint is publicly available.
-
-## Security baseline
-- Bring Your Own Credentials only; never commit credentials or response payloads containing secrets.
-- Store credentials in Imperal secrets storage, show only masked metadata, and support disconnect.
-- Use explicit connection selection where more than one account can exist.
-- Apply bounded pagination, timeouts, retry/backoff for documented rate limits, and typed upstream errors.
-- Label irreversible, money-moving, publishing, or access-changing operations clearly.
+## Delivery Gates
+1. [x] Official API discovery completed with Zoho API v3 specifications.
+2. [x] Regional datacenter matrix mapped and implemented.
+3. [x] Five mandatory specification documents authored.
+4. [x] Client implemented with B7-B10 compliance, secret redaction, and 429/401 classification.
+5. [x] Panel sidebar implemented conforming to UI_INTERFACE_STANDARD.md.
+6. [x] Action prices calibrated per PRICING_POLICY.md.

@@ -14,11 +14,14 @@ def _settings_button() -> ui.UINode:
 
 def _help_modal() -> ui.UINode:
     return ui.Modal(
-        trigger=ui.Button("How do I set this up?", variant="ghost", size="sm"),
+        trigger=ui.Button("How do I connect Zoho Books?", variant="ghost", size="sm"),
         title="Connecting Zoho Books",
         children=[
             ui.Text(
-                "1. Sign in to your Zoho Books account and navigate to API/Integration or OAuth settings.\n2. Choose your preferred authentication method (OAuth SSO, API Key / Personal Token, or Client Credentials / Service Account).\n3. Authorize or enter your credentials above and click Connect.",
+                "1. Sign in to your Zoho Books organization (books.zoho.com or your local DC).\n"
+                "2. Find your Organization ID under Settings > Organization Profile.\n"
+                "3. In Zoho Developer Console (api-console.zoho.com), create a Self-Client or Server-based App to generate an OAuth Access Token with ZohoBooks.fullaccess.all scope.\n"
+                "4. Select your data center region (US, EU, IN, AU, JP, CA, SA), enter credentials and click Connect.",
                 variant="body"
             )
         ]
@@ -32,76 +35,76 @@ async def zoho_books_sidebar(ctx, **kwargs) -> ui.UINode:
         align="stretch",
         children=[
             ui.Text("Zoho Books", variant="heading"),
-            ui.Stack(
-                direction="v",
-                gap=1,
-                align="stretch",
-                children=[
-                    ui.Text("Manage your Zoho Books connections and integrations.", variant="caption"),
-                ]
-            ),
+            ui.Text("Manage invoices, customers, bills, bank accounts and tax rates via Zoho Books API v3.", variant="caption"),
             ui.Divider(),
-            ui.Stack(
-                direction="v",
-                gap=2,
-                align="stretch",
+            ui.Form(
+                submit_label="Connect Zoho Books",
+                action=ui.Call("connect_zoho_books"),
                 children=[
-                    ui.Button(
-                        "Sign in with Zoho Books (OAuth / SSO)",
-                        variant="primary",
-                        size="sm",
-                        icon="login"
-                    ),
-                    ui.Divider(),
-                    ui.Text("Or connect via API Key or Service Account", variant="caption"),
-                    ui.Form(
-                        submit_label="Connect Zoho Books",
-                        action=ui.Call("connect_zoho_books"),
+                    ui.Stack(
+                        direction="v",
+                        gap=2,
+                        align="stretch",
                         children=[
                             ui.Stack(
                                 direction="v",
-                                gap=2,
+                                gap=1,
                                 align="stretch",
                                 children=[
-                                    ui.Stack(
-                                        direction="v",
-                                        gap=1,
-                                        align="stretch",
-                                        children=[
-                                            ui.Text("Authentication Method", variant="label"),
-                                            ui.Select(
-                                                param_name="auth_mode",
-                                                value="api_key",
-                                                options=[
-                                                    {"label": "API Key / Personal Access Token", "value": "api_key"},
-                                                    {"label": "OAuth 2.0 Bearer Token", "value": "oauth"},
-                                                    {"label": "Client Credentials (Service Account / Machine-to-Machine)", "value": "client_credentials"},
-                                                ]
-                                            ),
-                                        ]
-                                    ),
-                                    ui.Stack(
-                                        direction="v",
-                                        gap=1,
-                                        align="stretch",
-                                        children=[
-                                            ui.Text("Connection Label", variant="label"),
-                                            ui.Input(param_name="label", placeholder="e.g. Production Zoho Books"),
-                                        ]
-                                    ),
-                                    ui.Stack(
-                                        direction="v",
-                                        gap=1,
-                                        align="stretch",
-                                        children=[
-                                            ui.Text("API Key / Access Token", variant="label"),
-                                            ui.Input(param_name="api_key", placeholder="Paste API Key, Bearer or Access Token"),
+                                    ui.Text("Connection Label", variant="label"),
+                                    ui.Input(param_name="label", placeholder="e.g. Production Zoho Books"),
+                                ]
+                            ),
+                            ui.Stack(
+                                direction="v",
+                                gap=1,
+                                align="stretch",
+                                children=[
+                                    ui.Text("Data Center Region", variant="label"),
+                                    ui.Select(
+                                        param_name="region",
+                                        value="us",
+                                        options=[
+                                            {"label": "United States (.com)", "value": "us"},
+                                            {"label": "Europe (.eu)", "value": "eu"},
+                                            {"label": "India (.in)", "value": "in"},
+                                            {"label": "Australia (.com.au)", "value": "au"},
+                                            {"label": "Japan (.jp)", "value": "jp"},
+                                            {"label": "Canada (.ca)", "value": "ca"},
+                                            {"label": "Saudi Arabia (.sa)", "value": "sa"},
                                         ]
                                     ),
                                 ]
-                            )
+                            ),
+                            ui.Stack(
+                                direction="v",
+                                gap=1,
+                                align="stretch",
+                                children=[
+                                    ui.Text("Organization ID", variant="label"),
+                                    ui.Input(param_name="organization_id", placeholder="e.g. 7001234567"),
+                                ]
+                            ),
+                            ui.Stack(
+                                direction="v",
+                                gap=1,
+                                align="stretch",
+                                children=[
+                                    ui.Text("OAuth Access Token", variant="label"),
+                                    ui.Input(param_name="auth_token", placeholder="Paste Zoho OAuth Access Token / Self-Client token"),
+                                ]
+                            ),
+                            ui.Stack(
+                                direction="v",
+                                gap=1,
+                                align="stretch",
+                                children=[
+                                    ui.Text("Custom Base URL (optional)", variant="label"),
+                                    ui.Input(param_name="base_url", placeholder="Leave blank to use official regional API"),
+                                ]
+                            ),
                         ]
-                    ),
+                    )
                 ]
             ),
             _help_modal(),

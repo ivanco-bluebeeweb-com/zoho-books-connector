@@ -11,7 +11,11 @@ async def _get_client(ctx, cid: str = ""):
     conn = await resolve_connection(ctx, cid)
     if not conn:
         return None, ActionResult.error("No active Zoho Books connection", code="UNAUTHORIZED")
-    return ZohoBooksClient(api_key=conn["api_key"], base_url=conn.get("base_url", "")), None
+    token = conn.get("auth_token", conn.get("api_key", ""))
+    org_id = conn.get("organization_id", "")
+    region = conn.get("region", "us")
+    base_url = conn.get("base_url", "")
+    return ZohoBooksClient(auth_token=token, organization_id=org_id, region=region, base_url=base_url), None
 
 @chat.function(
     "list_customers",

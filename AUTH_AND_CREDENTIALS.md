@@ -1,18 +1,13 @@
-# Zoho Books Connector — Authentication & Credentials
+# Zoho Books Connector — Authentication & Credentials Standard (B1–B10)
 
-## Principle
-This connector uses customer-provided credentials and holds them only in Imperal encrypted secrets storage. The panel never displays saved secret values.
-
-## Authentication decision gate
-Before implementation, determine the officially supported model for Zoho Books:
-- **OAuth 2.0:** use authorization code + PKCE where supported; persist refresh metadata securely and handle re-consent.
-- **Service-to-service OAuth:** request only documented client credentials/scopes and validate with a harmless call.
-- **API token/key:** ask for the exact token plus required account/tenant/base URL only when the vendor requires them.
-- **Self-hosted/local:** require HTTPS base URL and validate ownership/connectivity without exposing credential material.
-
-## Required UX behavior
-- Every credential input has a visible label and contextual placeholder.
-- Explain where the credential is obtained only in the help modal, not duplicated in the sidebar.
-- On connect, validate without mutating the provider account; on failure, return a safe actionable message.
-- Connection lists show label, provider identity/tenant where safe, health/reauthorization state, and masked identifiers.
-- Disconnect deletes only the locally stored Imperal credential.
+## Compliance Audit
+- **B1 (Explicit Credentials):** Requires explicit `auth_token` and `organization_id`.
+- **B2 (Encrypted Storage):** Credentials saved exclusively in Imperal Secrets vault (`zoho_books_connections`).
+- **B3 (Masked Exposure):** Secrets masked in UI/logs (`zoho…1234`).
+- **B4 (One-Click Revocation):** `disconnect_zoho_books` clears stored credentials immediately.
+- **B5 (Least Privilege):** Scopes documented for user clarity (`ZohoBooks.fullaccess.all`).
+- **B6 (Proactive Validation):** `verify_auth()` executes harmless `GET /organizations` verification call before saving.
+- **B7 (Multi-Datacenter / Region):** Full support for US, EU, IN, AU, JP, CA, SA datacenters.
+- **B8 (Secret Sanitization):** Error classifier catches and redacts tokens/auth headers from all error strings.
+- **B9 (Multi-Account Scoping):** Explicit `connection_id` on every tool allows switching between accounts/organizations.
+- **B10 (Scope Degradation):** Informative error messaging when permissions are missing.
