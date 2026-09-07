@@ -75,7 +75,7 @@ async def connect_zoho_books(ctx, params: ConnectParams) -> ActionResult[Connect
     for c in conns: c["is_active"] = False
     conns.append(record)
     await _save_connections(ctx, conns)
-    return ActionResult.ok(
+    return ActionResult.success(
         ConnectionRecord(
             id=cid,
             label=record["label"],
@@ -84,7 +84,7 @@ async def connect_zoho_books(ctx, params: ConnectParams) -> ActionResult[Connect
             region=params.region.lower(),
             base_url=client.base_url,
             is_active=True
-        )
+        ), summary="Zoho books connected."
     )
 
 @chat.function(
@@ -109,7 +109,7 @@ async def list_connections(ctx, params: NoParams) -> ActionResult[ConnectionList
         )
         for c in conns
     ]
-    return ActionResult.ok(ConnectionList(connections=records, total=len(records)))
+    return ActionResult.success(ConnectionList(connections=records, total=len(records)), summary="Connections listed.")
 
 @chat.function(
     "disconnect_zoho_books",
@@ -130,4 +130,4 @@ async def disconnect_zoho_books(ctx, params: ConnectionIdParams) -> ActionResult
     if new_conns and target.get("is_active"):
         new_conns[0]["is_active"] = True
     await _save_connections(ctx, new_conns)
-    return ActionResult.ok(DeleteResult(id=target["id"], deleted=True, message="Disconnected successfully"))
+    return ActionResult.success(DeleteResult(id=target["id"], deleted=True, message="Disconnected successfully"), summary="Zoho books disconnected.")
