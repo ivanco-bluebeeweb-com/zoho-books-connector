@@ -2246,5 +2246,12 @@
       "audit_accounting_health": 40,
       "get_cash_flow_summary": 40
     }
-  }
+  },
+  "secrets": [
+    {
+      "name": "zoho_books_connections",
+      "description": "Stored encrypted connections and credentials for zoho-books-connector",
+      "required": false
+    }
+  ]
 }
