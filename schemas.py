@@ -46,7 +46,8 @@ class GetCustomerParams(BaseModel):
 
 class CreateCustomerParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    contact_name: str = Field(description="Display name or primary contact name.")
+    contact_name: str = Field(default="", description="Display name or primary contact name.")
+    name: str = Field(default="", description="Alias for contact name.")
     company_name: str = Field(default="", description="Company name if B2B customer.")
     email: str = Field(default="", description="Primary billing email address.")
     phone: str = Field(default="", description="Primary contact phone number.")
@@ -86,7 +87,8 @@ class GetInvoiceParams(BaseModel):
 
 class CreateInvoiceParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    customer_id: str = Field(description="Customer ID the invoice is issued to.")
+    customer_id: str = Field(default="", description="Customer ID the invoice is issued to.")
+    name: str = Field(default="", description="Alias or invoice reference.")
     invoice_number: str = Field(default="", description="Optional explicit invoice number.")
     date: str = Field(default="", description="Invoice issue date (YYYY-MM-DD).")
     due_date: str = Field(default="", description="Invoice due date (YYYY-MM-DD).")
@@ -129,7 +131,8 @@ class GetBillParams(BaseModel):
 
 class CreateBillParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    vendor_id: str = Field(description="Vendor ID the bill is from.")
+    vendor_id: str = Field(default="", description="Vendor ID the bill is from.")
+    name: str = Field(default="", description="Alias or bill reference.")
     bill_number: str = Field(default="", description="Vendor reference bill number.")
     line_items: list[dict[str, Any]] = Field(default=[], description="Bill line items.")
     details: Optional[dict[str, Any]] = Field(default=None, description="Detailed attributes and payload.")
@@ -170,8 +173,9 @@ class GetPaymentParams(BaseModel):
 
 class CreatePaymentParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    customer_id: str = Field(description="Customer who made the payment.")
-    amount: float = Field(description="Payment amount received.")
+    customer_id: str = Field(default="", description="Customer who made the payment.")
+    amount: float = Field(default=0.0, description="Payment amount received.")
+    name: str = Field(default="", description="Alias or payment reference.")
     date: str = Field(default="", description="Payment date (YYYY-MM-DD).")
     payment_mode: str = Field(default="cash", description="Payment mode (cash, bank, check, etc.).")
     details: Optional[dict[str, Any]] = Field(default=None, description="Detailed attributes and payload.")
@@ -212,7 +216,8 @@ class GetBankAccountParams(BaseModel):
 
 class CreateBankAccountParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    account_name: str = Field(description="Name of the bank account.")
+    account_name: str = Field(default="", description="Name of the bank account.")
+    name: str = Field(default="", description="Alias for account name.")
     account_type: str = Field(default="bank", description="Account type: bank, credit_card, etc.")
     currency_code: str = Field(default="USD", description="Account currency code.")
     details: Optional[dict[str, Any]] = Field(default=None, description="Detailed attributes and payload.")
@@ -252,8 +257,10 @@ class GetTaxRateParams(BaseModel):
 
 class CreateTaxRateParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier.")
-    tax_name: str = Field(description="Name of the tax.")
-    tax_percentage: float = Field(description="Tax percentage (e.g. 20.0).")
+    tax_name: str = Field(default="", description="Name of the tax.")
+    tax_percentage: float = Field(default=0.0, description="Tax percentage (e.g. 20.0).")
+    name: str = Field(default="", description="Alias for tax name.")
+    rate: float = Field(default=0.0, description="Alias for tax percentage.")
     details: Optional[dict[str, Any]] = Field(default=None, description="Detailed attributes and payload.")
 
 class UpdateTaxRateParams(BaseModel):

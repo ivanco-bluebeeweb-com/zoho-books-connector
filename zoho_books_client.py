@@ -180,7 +180,9 @@ class ZohoBooksClient:
             except Exception as e:
                 return {"error": f"Failed to get invoice: {str(e)[:120]}"}
 
-    async def create_invoice(self, customer_id: str, line_items: list[dict[str, Any]], details: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    async def create_invoice(self, customer_id: str = "", line_items: list[dict[str, Any]] = None, details: Optional[dict[str, Any]] = None, name: str = "") -> dict[str, Any]:
+        if not customer_id and name: customer_id = name
+        if line_items is None: line_items = []
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 payload = {"customer_id": customer_id, "line_items": line_items}
@@ -238,7 +240,9 @@ class ZohoBooksClient:
             except Exception as e:
                 return {"error": f"Failed to get bill: {str(e)[:120]}"}
 
-    async def create_bill(self, vendor_id: str, line_items: list[dict[str, Any]], details: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    async def create_bill(self, vendor_id: str = "", line_items: list[dict[str, Any]] = None, details: Optional[dict[str, Any]] = None, name: str = "") -> dict[str, Any]:
+        if not vendor_id and name: vendor_id = name
+        if line_items is None: line_items = []
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 payload = {"vendor_id": vendor_id, "line_items": line_items}
@@ -295,7 +299,8 @@ class ZohoBooksClient:
             except Exception as e:
                 return {"error": f"Failed to get payment: {str(e)[:120]}"}
 
-    async def create_payment(self, customer_id: str, amount: float, details: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    async def create_payment(self, customer_id: str = "", amount: float = 0.0, details: Optional[dict[str, Any]] = None, name: str = "") -> dict[str, Any]:
+        if not customer_id and name: customer_id = name
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 payload = {"customer_id": customer_id, "amount": amount}
@@ -351,7 +356,8 @@ class ZohoBooksClient:
             except Exception as e:
                 return {"error": f"Failed to get bank account: {str(e)[:120]}"}
 
-    async def create_bank_account(self, account_name: str, account_type: str, details: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    async def create_bank_account(self, account_name: str = "", account_type: str = "other_current_asset", details: Optional[dict[str, Any]] = None, name: str = "") -> dict[str, Any]:
+        if not account_name and name: account_name = name
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 payload = {"account_name": account_name, "account_type": account_type}
@@ -407,7 +413,8 @@ class ZohoBooksClient:
             except Exception as e:
                 return {"error": f"Failed to get tax rate: {str(e)[:120]}"}
 
-    async def create_tax_rate(self, tax_name: str, tax_percentage: float, details: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    async def create_tax_rate(self, tax_name: str = "", tax_percentage: float = 0.0, details: Optional[dict[str, Any]] = None, name: str = "") -> dict[str, Any]:
+        if not tax_name and name: tax_name = name
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 payload = {"tax_name": tax_name, "tax_percentage": tax_percentage}
